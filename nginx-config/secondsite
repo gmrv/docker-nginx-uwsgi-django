@@ -1,0 +1,14 @@
+server {
+    listen 80;
+    server_name secondsite.com www.secondsite.com;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /webapp/secondsite;
+    }
+
+    location / {
+        include         uwsgi_params;
+        uwsgi_pass      unix:/run/uwsgi/secondsite.sock;
+    }
+}

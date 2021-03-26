@@ -1,0 +1,33 @@
+server {
+    listen 80;
+    server_name firstsite.com www.firstsite.com;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /webapp/firstsite;
+    }
+
+    location / {
+        include         uwsgi_params;
+        uwsgi_pass      unix:/run/uwsgi/firstsite.sock;
+    }
+}
+
+server {
+  listen 443 default ssl;
+
+  ssl on; 
+  ssl_certificate      /root/.ssh/localhost.crt;
+  ssl_certificate_key  /root/.ssh/localhost.key;
+  
+  location = /favicon.ico { access_log off; log_not_found off; }
+  location /static/ {
+      root /webapp/firstsite;
+  }
+
+  location / {
+      include         uwsgi_params;
+      uwsgi_pass      unix:/run/uwsgi/firstsite.sock;
+  }  
+  
+}
